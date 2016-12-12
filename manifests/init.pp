@@ -27,7 +27,7 @@ class kapacitor (
   }
 
   $tasks.each |String $task_name, Kapacitor::Task $task| {
-    kapacitor_template {$task_name:
+    kapacitor_task {$task_name:
       * => $task
     }
   }
