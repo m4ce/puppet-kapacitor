@@ -69,7 +69,7 @@ Puppet::Type.type(:kapacitor_template).provide(:kapacitor_api) do
 
   def flush
     unless @property_flush.empty?
-      @property_flush[:id] = self[:name]
+      @property_flush[:id] = resource[:name]
       Kapacitor::Client.new.update_template(@property_flush)
     end
   end
