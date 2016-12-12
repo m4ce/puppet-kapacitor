@@ -1,0 +1,30 @@
+{
+    "author": "Matteo Cerutti",
+    "data_provider": "hiera",
+    "dependencies": [
+        {
+            "name": "puppetlabs/stdlib",
+            "version_requirement": ">= 4.12.0 < 5.0.0"
+        },
+        {
+            "name": "m4ce/docker",
+            "version_requirement": ">= 0.1.20 < 0.2.0"
+        }
+    ],
+    "license": "Apache 2.0",
+    "name": "kapacitor",
+    "operatingsystem_support": [],
+    "project_page": "https://github.com/m4ce/puppet-kapacitor",
+    "requirements": [
+        {
+            "name": "puppet",
+            "version_requirement": ">= 4.0.0"
+        }
+    ],
+    "source": "https://github.com/m4ce/puppet-kapacitor",
+    "summary": "Manage kapacitor framework, an open source framework for processing, monitoring, and alerting on time series data ",
+    "tags": [
+        "kapacitor"
+    ],
+    "version": "0.0.1"
+}

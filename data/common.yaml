@@ -1,0 +1,105 @@
+---
+lookup_options:
+  kapacitor::templates:
+    merge:
+      strategy: deep
+  kapacitor::tasks:
+    merge:
+      strategy: deep
+  kapacitor::opts:
+    merge:
+      strategy: deep
+  kapacitor::service_opts:
+    merge:
+      strategy: deep
+  kapacitor::packages:
+    merge:
+      strategy: hash
+kapacitor::templates: {}
+kapacitor::tasks: {}
+kapacitor::data_dir: "/var/lib/kapacitor"
+kapacitor::opts:
+  hostname: "%{facts.networking.fqdn}"
+  "skip-config-overrides": false
+  "default-retention-policy": ""
+  http:
+    "bind-address": ":9092"
+    "auth-enabled": false
+    "log-enabled": true
+    "write-tracing": false
+    "pprof-enabled": false
+    "https-enabled": false
+  "config-override":
+    enabled: true
+  logging:
+    file: "STDOUT"
+    level: "INFO"
+  replay:
+    dir: "%{lookup('kapacitor::data_dir')}/replay"
+  storage:
+    boltdb: "%{lookup('kapacitor::data_dir')}/kapacitor.db"
+  deadman:
+    global: false
+  smtp:
+    enabled: false
+    host: "localhost"
+    port: 25
+    username: ""
+    password: ""
+    "no-verify": false
+    "idle-timeout": "30s"
+    "global": false
+    "state-changes-only": false
+  slack:
+    enabled: false
+    global: false
+    "state-changes-only": false
+  opsgenie:
+    enabled: false
+  victorops:
+    enabled: false
+  pagerduty:
+    enabled: false
+  hipchat:
+    enabled: false
+  telegram:
+    enabled: false
+  sensu:
+    enabled: false
+  alerta:
+    enabled: false
+  reporting:
+    enabled: false
+  kubernetes:
+    enabled: false
+  talk:
+    enabled: false
+  stats:
+    enabled: true
+    "stats-interval": "10s"
+    "database": "_kapacitor"
+    "retention-policy": "autogen"
+  udf:
+    functions: {}
+  collectd:
+    enabled: false
+  opentsdb:
+    enabled: false
+kapacitor::config_dir: "/etc/kapacitor"
+kapacitor::config_dir_manage: true
+kapacitor::config_dir_purge: true
+kapacitor::config_file: "%{lookup('kapacitor::config_dir')}/kapacitor.conf"
+kapacitor::config_file_manage: true
+kapacitor::service_provider: "default"
+kapacitor::packages:
+  "kapacitor": {}
+kapacitor::service_image: "kapacitor:latest"
+kapacitor::service_opts:
+  network_mode: "host"
+  binds: 
+    - "%{lookup('kapacitor::config_dir')}:%{lookup('kapacitor::config_dir')}:ro"
+    - "%{lookup('kapacitor::data_dir')}:%{lookup('kapacitor::data_dir')}:rw"
+kapacitor::service_name: "kapacitor"
+kapacitor::service_manage: true
+kapacitor::service_ensure: "running"
+kapacitor::service_enable: true

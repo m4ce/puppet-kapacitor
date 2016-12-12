@@ -1,0 +1,33 @@
+---
+version: 4
+datadir: data
+hierarchy:
+  - name: "Operating system release"
+    backend: yaml
+    path: "os/%{::facts.os.name}/%{::facts.os.release.full}"
+  - name: "Operating system major release"
+    backend: yaml
+    path: "os/%{::facts.os.name}/%{::facts.os.release.major}"
+  - name: "Operating system"
+    backend: yaml
+    path: "os/%{::facts.os.name}"
+  - name: "OS family LSB distribution release"
+    backend: yaml
+    path: "osfamily/%{::facts.os.family}/%{::facts.os.release.full}"
+  - name: "OS family LSB major distribution release"
+    backend: yaml
+    path: "osfamily/%{::facts.os.family}/%{::facts.os.release.major}"
+  - name: "OS family name"
+    backend: yaml
+    path: "osfamily/%{::facts.os.family}"
+  - name: "Kernel release"
+    backend: yaml
+    path: "kernel/%{::facts.kernel}/%{::facts.kernelrelease}"
+  - name: "Kernel version"
+    backend: yaml
+    path: "kernel/%{::facts.kernel}/%{::facts.kernelversion}"
+  - name: "Kernel major version"
+    backend: yaml
+    path: "kernel/%{::facts.kernel}/%{::facts.kernelmajversion}"
+  - name: "common"
+    backend: yaml

@@ -1,0 +1,5 @@
+#
+# Managed by Puppet in the <%= $::environment %> environment
+#
+
+<%= $config %>
