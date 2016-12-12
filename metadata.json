@@ -12,7 +12,7 @@
         }
     ],
     "license": "Apache 2.0",
-    "name": "kapacitor",
+    "name": "m4ce-kapacitor",
     "operatingsystem_support": [],
     "project_page": "https://github.com/m4ce/puppet-kapacitor",
     "requirements": [
