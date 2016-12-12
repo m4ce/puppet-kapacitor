@@ -1,3 +1,9 @@
+#
+# generate_toml.rb
+#
+# Author: Matteo Cerutti <matteo.cerutti@hotmail.co.uk>
+#
+
 module Puppet::Parser::Functions
   newfunction(:generate_toml, :type => :rvalue, :doc => <<-EOS
 This generate a TOML body from a Ruby hash
