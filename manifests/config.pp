@@ -1,14 +1,9 @@
 class kapacitor::config {
-  file {
-    [$kapacitor::config_dir, "${kapacitor::config_dir}/kapacitor.d"]:
-      recurse => true,
-      purge => $kapacitor::config_dir_purge;
-
-    default:
-      owner => "root",
-      group => "root",
-      mode => "0755",
-      ensure => "directory"
+  file {$kapacitor::config_dir:
+    owner => "root",
+    group => "root",
+    mode => "0755",
+    ensure => "directory"
   }
 
   if $kapacitor::config_file_manage {
@@ -22,19 +17,11 @@ class kapacitor::config {
     if $kapacitor::service_manage {
       case $kapacitor::service_provider {
         default: {
-          File["${kapacitor::config_dir}/kapacitor.d"] {
-            notify => Service[$kapacitor::service_name]
-          }
-
           File[$kapacitor::config_file] {
             notify => Service[$kapacitor::service_name]
           }
         }
         "docker": {
-          File["${kapacitor::config_dir}/kapacitor.d"] {
-            notify => Docker_container[$kapacitor::service_name]
-          }
-
           File[$kapacitor::config_file] {
             notify => Docker_container[$kapacitor::service_name]
           }

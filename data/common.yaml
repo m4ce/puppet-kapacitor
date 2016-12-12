@@ -89,8 +89,6 @@ kapacitor::opts:
   opentsdb:
     enabled: false
 kapacitor::config_dir: "/etc/kapacitor"
-kapacitor::config_dir_manage: true
-kapacitor::config_dir_purge: true
 kapacitor::config_file: "%{lookup('kapacitor::config_dir')}/kapacitor.conf"
 kapacitor::config_file_manage: true
 kapacitor::service_provider: "default"
