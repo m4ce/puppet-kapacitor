@@ -12,6 +12,9 @@ lookup_options:
   kapacitor::service_opts:
     merge:
       strategy: deep
+  kapacitor::gem_dependencies:
+    merge:
+      strategy: hash
   kapacitor::packages:
     merge:
       strategy: hash
@@ -91,6 +94,8 @@ kapacitor::config_dir_purge: true
 kapacitor::config_file: "%{lookup('kapacitor::config_dir')}/kapacitor.conf"
 kapacitor::config_file_manage: true
 kapacitor::service_provider: "default"
+kapacitor::gem_dependencies:
+  "kapacitor-ruby": {}
 kapacitor::packages:
   "kapacitor": {}
 kapacitor::service_image: "kapacitor:latest"

@@ -139,6 +139,15 @@ kapacitor::opts:
 ##### `data_dir` (optional)
 Path to the Kapacitor data directory (default: /var/lib/kapacitor)
 
+##### `gem_dependencies` (optional)
+Rubygems dependencies for Kapacitor
+
+Defaults to:
+```
+kapacitor::gem_dependencies:
+  "kapacitor-ruby": {}
+```
+
 ##### `packages` (optional)
 Installation packages for Kapacitor
 

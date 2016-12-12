@@ -7,6 +7,7 @@ class kapacitor (
   String $config_file,
   Boolean $config_file_manage,
   Hash $packages,
+  Hash $gem_dependencies,
   Enum["default", "docker"] $service_provider,
   Hash $service_opts,
   String $service_image,
