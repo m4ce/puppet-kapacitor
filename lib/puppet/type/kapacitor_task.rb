@@ -23,6 +23,22 @@ Puppet::Type.newtype(:kapacitor_task) do
 
   newproperty(:script) do
     desc 'The content of the script'
+
+    def is_to_s(value)
+      if value
+        value.inspect
+      else
+        super
+      end
+    end
+
+    def should_to_s(newvalue = @should)
+      if newvalue
+        newvalue.inspect
+      else
+        super
+      end
+    end
   end
 
   newparam(:template_id) do
