@@ -42,16 +42,15 @@ Puppet::Type.type(:kapacitor_task).provide(:kapacitor_api) do
   def create
     task = {}
 
-    task[:id] = resource[:name]
-    task[:type] = resource[:type].to_s if resource[:type]
-    task[:script] = resource[:script] if resource[:script]
-    task[:template_id] = resource[:template_id] if resource[:template_id]
-    task[:dbrps] = resource[:dbrps] if resource[:dbrps]
-    task[:status] = resource[:enable] ? 'enabled' : 'disabled'
-    task[:vars] = resource[:vars] if resource[:vars]
+    task['type'] = resource[:type].to_s if resource[:type]
+    task['script'] = resource[:script] if resource[:script]
+    task['template_id'] = resource[:template_id] if resource[:template_id]
+    task['dbrps'] = resource[:dbrps] if resource[:dbrps]
+    task['status'] = resource[:enable] ? 'enabled' : 'disabled'
+    task['vars'] = resource[:vars] if resource[:vars]
 
     begin
-      Kapacitor::Client.new.define_task(task)
+      Kapacitor::Client.new.define_task(resource[:name], task)
     rescue
       raise Puppet::Error, "Could not create task #{self.name}: #{$!}"
     end
@@ -60,7 +59,7 @@ Puppet::Type.type(:kapacitor_task).provide(:kapacitor_api) do
   end
 
   def destroy
-    Kapacitor::Client.new.delete_task(id: resource[:name])
+    Kapacitor::Client.new.delete_task(resource[:name])
     @property_hash.clear
   end
 
@@ -72,11 +71,11 @@ Puppet::Type.type(:kapacitor_task).provide(:kapacitor_api) do
   mk_resource_methods
 
   def enable
-    Kapacitor::Client.new.update_task(id: resource[:name], status: 'enabled')
+    Kapacitor::Client.new.update_task(resource[:name], {'status' => 'enabled'})
   end
 
   def disable
-    Kapacitor::Client.new.update_task(id: resource[:name], status: 'disabled')
+    Kapacitor::Client.new.update_task(resource[:name], {'status' => 'disabled'})
   end
 
   def initialize(value = {})
@@ -85,24 +84,24 @@ Puppet::Type.type(:kapacitor_task).provide(:kapacitor_api) do
   end
 
   def type=(value)
-    @property_flush[:type] = value.to_s
+    @property_flush['type'] = value.to_s
   end
 
   def script=(value)
-    @property_flush[:script] = value
+    @property_flush['script'] = value
   end
 
   def dbrps=(value)
-    @property_flush[:dbrps] = value
+    @property_flush['dbrps'] = value
   end
 
   def vars=(value)
-    @property_flush[:vars] = value
+    @property_flush['vars'] = value
   end
 
   def flush
     unless @property_flush.empty?
-      @property_flush[:id] = resource[:name]
+      @property_flush['id'] = resource[:name]
       Kapacitor::Client.new.update_task(@property_flush)
     end
   end
