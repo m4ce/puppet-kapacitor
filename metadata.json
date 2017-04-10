@@ -7,7 +7,7 @@
         },
         {
             "name": "m4ce/docker",
-            "version_requirement": ">= 0.1.20 < 0.2.0"
+            "version_requirement": ">= 0.2.0 < 0.3.0"
         },
         {
             "name": "m4ce/extlib",
@@ -21,7 +21,7 @@
     "requirements": [
         {
             "name": "puppet",
-            "version_requirement": ">= 4.0.0"
+            "version_requirement": ">= 4.10.0 < 5.0.0"
         }
     ],
     "source": "https://github.com/m4ce/puppet-kapacitor",
