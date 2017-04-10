@@ -1,6 +1,5 @@
 {
     "author": "Matteo Cerutti",
-    "data_provider": "hiera",
     "dependencies": [
         {
             "name": "puppetlabs/stdlib",
@@ -30,5 +29,5 @@
     "tags": [
         "kapacitor"
     ],
-    "version": "0.0.16"
+    "version": "0.1.0"
 }

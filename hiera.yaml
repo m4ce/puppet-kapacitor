@@ -1,33 +1,26 @@
 ---
-version: 4
-datadir: data
+version: 5
+defaults:
+  datadir: data
+  data_hash: yaml_data
 hierarchy:
   - name: "Operating system release"
-    backend: yaml
-    path: "os/%{::facts.os.name}/%{::facts.os.release.full}"
+    path: "os/%{::facts.os.name}/%{::facts.os.release.full}.yaml"
   - name: "Operating system major release"
-    backend: yaml
-    path: "os/%{::facts.os.name}/%{::facts.os.release.major}"
+    path: "os/%{::facts.os.name}/%{::facts.os.release.major}.yaml"
   - name: "Operating system"
-    backend: yaml
-    path: "os/%{::facts.os.name}"
+    path: "os/%{::facts.os.name}.yaml"
   - name: "OS family LSB distribution release"
-    backend: yaml
-    path: "osfamily/%{::facts.os.family}/%{::facts.os.release.full}"
+    path: "osfamily/%{::facts.os.family}/%{::facts.os.release.full}.yaml"
   - name: "OS family LSB major distribution release"
-    backend: yaml
-    path: "osfamily/%{::facts.os.family}/%{::facts.os.release.major}"
+    path: "osfamily/%{::facts.os.family}/%{::facts.os.release.major}.yaml"
   - name: "OS family name"
-    backend: yaml
-    path: "osfamily/%{::facts.os.family}"
+    path: "osfamily/%{::facts.os.family}.yaml"
   - name: "Kernel release"
-    backend: yaml
-    path: "kernel/%{::facts.kernel}/%{::facts.kernelrelease}"
+    path: "kernel/%{::facts.kernel}/%{::facts.kernelrelease}.yaml"
   - name: "Kernel version"
-    backend: yaml
-    path: "kernel/%{::facts.kernel}/%{::facts.kernelversion}"
+    path: "kernel/%{::facts.kernel}/%{::facts.kernelversion}.yaml"
   - name: "Kernel major version"
-    backend: yaml
-    path: "kernel/%{::facts.kernel}/%{::facts.kernelmajversion}"
+    path: "kernel/%{::facts.kernel}/%{::facts.kernelmajversion}.yaml"
   - name: "common"
-    backend: yaml
+    path: "common.yaml"
