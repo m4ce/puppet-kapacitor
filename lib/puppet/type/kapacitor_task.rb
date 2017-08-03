@@ -1,9 +1,3 @@
-#
-# kapacitor_task.rb
-#
-# Author: Matteo Cerutti <matteo.cerutti@hotmail.co.uk>
-#
-
 Puppet::Type.newtype(:kapacitor_task) do
   @doc = 'Manage Kapacitor tasks'
 

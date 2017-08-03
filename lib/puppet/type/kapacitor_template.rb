@@ -1,9 +1,3 @@
-#
-# kapacitor_template.rb
-#
-# Author: Matteo Cerutti <matteo.cerutti@hotmail.co.uk>
-#
-
 Puppet::Type.newtype(:kapacitor_template) do
   @doc = 'Manage Kapacitor templates'
 

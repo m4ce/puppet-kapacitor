@@ -1,14 +1,9 @@
-#
-# kapacitor_task.rb
-#
-# Author: Matteo Cerutti <matteo.cerutti@hotmail.co.uk>
-#
+require 'kapacitor/client' if Puppet.features.kapacitor_api?
 
 Puppet::Type.type(:kapacitor_task).provide(:kapacitor_api) do
   desc "Manage Kapacitor tasks"
 
   confine :feature => :kapacitor_api
-  require 'kapacitor/client'
 
   def self.instances
     instances = []
