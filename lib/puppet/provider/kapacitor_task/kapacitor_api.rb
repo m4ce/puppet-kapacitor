@@ -77,11 +77,11 @@ Puppet::Type.type(:kapacitor_task).provide(:api) do
   mk_resource_methods
 
   def enable
-    api.update_task(id: resource[:name], status: 'enabled'})
+    api.update_task(id: resource[:name], status: 'enabled')
   end
 
   def disable
-    api.update_task(id: resource[:name], status: 'disabled'})
+    api.update_task(id: resource[:name], status: 'disabled')
   end
 
   def initialize(value = {})
