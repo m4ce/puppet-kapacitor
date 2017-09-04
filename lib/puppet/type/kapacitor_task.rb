@@ -53,13 +53,12 @@ Puppet::Type.newtype(:kapacitor_task) do
     desc 'A set of vars for overwriting any defined vars in the TICKscript'
 
     validate do |value|
-      unless value.is_a?(Hash)
-        raise ArgumentError, 'Task vars must be a Hash in the form of {"field_name" => {"value" => "VALUE", "type" => "TYPE"}}'
-      end
+      fail 'Task vars must be a Hash in the form of {"field_name" => {"value" => VALUE, "type" => "TYPE", "description" => "STRING"}}' unless value.is_a?(Hash)
 
       value.each do |field_name, field|
-        fail "Missing 'value' parameter for field '#{field_name}'" unless field.key?('value')
-        fail "Missing 'type' parameter for field '#{field_name}'" unless field.key?('type')
+        fail "Missing 'value' parameter for field '#{field_name}' in Kapacitor task #{self[:name]}" unless field.key?('value')
+        fail "Missing 'type' parameter for field '#{field_name} in Kapacitor task #{self[:name]}'" unless field.key?('type')
+        fail "Not a valid type '#{field['type']} for field '#{field_name}' in Kapacitor task #{self[:name]}" unless ['bool', 'int', 'float', 'duration', 'string', 'regex', 'lambda', 'star', 'list'].include?(field['type'])
       end
     end
   end
@@ -77,7 +76,7 @@ Puppet::Type.newtype(:kapacitor_task) do
   end
 
   newproperty(:enable) do
-    desc 'Whether the task should be enabled or not.'
+    desc 'Whether the task should be enabled or not'
 
     newvalue(:true) do
       provider.enable

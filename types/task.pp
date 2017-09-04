@@ -7,6 +7,7 @@ type Kapacitor::Task = Struct[{
   Optional['type'] => Enum["stream", "batch"],
   Optional[script] => String,
   Optional[vars] => Hash[String, Struct[{
+    Optional[description] => String,
     "type" => Enum['bool', 'int', 'float', 'duration', 'string', 'regex', 'lambda', 'star', 'list'],
     value => Data
   }]],
