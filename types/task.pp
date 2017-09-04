@@ -9,7 +9,7 @@ type Kapacitor::Task = Struct[{
   Optional[vars] => Hash[String, Struct[{
     "type" => Enum['bool', 'int', 'float', 'duration', 'string', 'regex', 'lambda', 'star', 'list'],
     value => Data
-  }],
+  }]],
   Optional[enable] => Boolean,
   Optional[ensure] => Enum["present", "absent"]
 }]
