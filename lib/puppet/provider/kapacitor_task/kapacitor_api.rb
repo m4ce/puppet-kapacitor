@@ -1,13 +1,24 @@
-require 'kapacitor/client' if Puppet.features.kapacitor_api?
+begin
+  require 'puppet_x/kapacitor/api'
+rescue LoadError => detail
+  module_base = Pathname.new(__FILE__).dirname
+  require module_base + '../../../puppet_x/kapacitor/api'
+end
 
-Puppet::Type.type(:kapacitor_task).provide(:kapacitor_api) do
+Puppet::Type.type(:kapacitor_task).provide(:api) do
   desc "Manage Kapacitor tasks"
 
-  confine :feature => :kapacitor_api
+  confine :feature => :api
+
+  # Mix in the api as instance methods
+  include PuppetX::Kapacitor::API
+
+  # Mix in the api as class methods
+  extend PuppetX::Kapacitor::API
 
   def self.instances
     instances = []
-    Kapacitor::Client.new.tasks.each do |task|
+    api.tasks.each do |task|
       instances << new(
         :name => task['id'],
         :type => task['type'].to_sym,
@@ -45,16 +56,16 @@ Puppet::Type.type(:kapacitor_task).provide(:kapacitor_api) do
     task['vars'] = resource[:vars] if resource[:vars]
 
     begin
-      Kapacitor::Client.new.define_task(resource[:name], task)
+      api.define_task(id: resource[:name], **task)
     rescue
-      raise Puppet::Error, "Could not create task #{self.name}: #{$!}"
+      fail "Could not create task #{self.name}: #{$!}"
     end
 
     @property_hash[:ensure] = resource[:ensure]
   end
 
   def destroy
-    Kapacitor::Client.new.delete_task(resource[:name])
+    api.delete_task(id: resource[:name])
     @property_hash.clear
   end
 
@@ -66,11 +77,11 @@ Puppet::Type.type(:kapacitor_task).provide(:kapacitor_api) do
   mk_resource_methods
 
   def enable
-    Kapacitor::Client.new.update_task(resource[:name], {'status' => 'enabled'})
+    api.update_task(id: resource[:name], status: 'enabled'})
   end
 
   def disable
-    Kapacitor::Client.new.update_task(resource[:name], {'status' => 'disabled'})
+    api.update_task(id: resource[:name], status: 'disabled'})
   end
 
   def initialize(value = {})
@@ -96,7 +107,7 @@ Puppet::Type.type(:kapacitor_task).provide(:kapacitor_api) do
 
   def flush
     unless @property_flush.empty?
-      Kapacitor::Client.new.update_task(resource[:name], @property_flush)
+      api.update_task(id: resource[:name], **@property_flush)
     end
   end
 end

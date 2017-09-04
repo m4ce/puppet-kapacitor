@@ -37,8 +37,8 @@ Puppet::Type.newtype(:kapacitor_template) do
 
   validate do
     if self[:ensure] != "absent"
-      raise ArgumentError, "Kapacitor type required for template #{self[:name]}" unless self[:type]
-      raise ArgumentError, "Kapacitor script required for template #{self[:name]}" unless self[:script]
+      fail "Kapacitor type required for template #{self[:name]}" unless self[:type]
+      fail "Kapacitor script required for template #{self[:name]}" unless self[:script]
     end
   end
 

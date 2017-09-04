@@ -43,8 +43,8 @@ Puppet::Type.newtype(:kapacitor_task) do
     desc 'List of database retention policy pairs the task is allowed to access in the form of  [{"db" => "DATABASE_NAME", "rp" => "RP_NAME"}]'
 
     validate do |value|
-      if (!value.is_a?(Hash)) or (!value.has_key?('db') or !value.has_key?('rp'))
-        raise ArgumentError, 'Task database/retention policy pairs needs to be a Hash in the form of {"db" => "DATABASE_NAME", "rp" => "RP_NAME"}'
+      unless value.is_a?(Hash) && value.key?('db') && value.key?('rp')
+        fail 'Task database/retention policy pairs needs to be a Hash in the form of {"db" => "DATABASE_NAME", "rp" => "RP_NAME"}'
       end
     end
   end
@@ -58,26 +58,26 @@ Puppet::Type.newtype(:kapacitor_task) do
       end
 
       value.each do |field_name, field|
-        raise ArgumentError, "Missing 'value' parameter for field '#{field_name}'" unless field.has_key?('value')
-        raise ArgumentError, "Missing 'type' parameter for field '#{field_name}'" unless field.has_key?('type')
+        fail "Missing 'value' parameter for field '#{field_name}'" unless field.key?('value')
+        fail "Missing 'type' parameter for field '#{field_name}'" unless field.key?('type')
       end
     end
   end
 
   validate do
     if self[:ensure] != "absent"
-      if (self[:template_id].nil? and self[:type].nil? and self[:script].nil?) or (self[:template_id] and (self[:type] or self[:script]))
-        raise ArgumentError, "Kapacitor Template ID or type/script required for task #{self[:name]}"
-      elsif self[:template_id].nil? and (self[:type].nil? or self[:script].nil?)
-        raise ArgumentError, "Kapacitor type/script required for task #{self[:name]} when not using a Template ID"
+      if (self[:template_id].nil? && self[:type].nil? && self[:script].nil?) || (self[:template_id] && (self[:type] || self[:script]))
+        fail "Kapacitor Template ID or type/script required for task #{self[:name]}"
+      elsif self[:template_id].nil? && (self[:type].nil? || self[:script].nil?)
+        fail "Kapacitor type/script required for task #{self[:name]} when not using a Template ID"
       end
 
-      raise ArgumentError, "Kapacitor task requires at least one database and retention policy" if (self[:dbrps].nil? or self[:dbrps].size == 0)
+      fail 'Kapacitor task requires at least one database and retention policy' if self[:dbrps].nil? || self[:dbrps].empty?
     end
   end
 
   newproperty(:enable) do
-    desc "Whether the task should be enabled or not."
+    desc 'Whether the task should be enabled or not.'
 
     newvalue(:true) do
       provider.enable

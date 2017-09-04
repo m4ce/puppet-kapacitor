@@ -6,6 +6,9 @@ lookup_options:
   kapacitor::tasks:
     merge:
       strategy: deep
+  kapacitor::topic_handlers:
+    merge:
+      strategy: deep
   kapacitor::opts:
     merge:
       strategy: deep
@@ -20,6 +23,7 @@ lookup_options:
       strategy: hash
 kapacitor::templates: {}
 kapacitor::tasks: {}
+kapacitor::topic_handlers: {}
 kapacitor::data_dir: "/var/lib/kapacitor"
 kapacitor::opts:
   hostname: "%{facts.networking.fqdn}"
@@ -94,13 +98,13 @@ kapacitor::config_file_manage: true
 kapacitor::service_provider: "default"
 kapacitor::gem_dependencies:
   "kapacitor-ruby":
-    ensure: "0.0.14"
+    ensure: "1.0.0"
 kapacitor::packages:
   "kapacitor": {}
 kapacitor::service_image: "kapacitor:latest"
 kapacitor::service_opts:
   network_mode: "host"
-  binds: 
+  binds:
     - "%{lookup('kapacitor::config_dir')}:%{lookup('kapacitor::config_dir')}:ro"
     - "%{lookup('kapacitor::data_dir')}:%{lookup('kapacitor::data_dir')}:rw"
 kapacitor::service_name: "kapacitor"

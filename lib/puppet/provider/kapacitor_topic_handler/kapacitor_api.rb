@@ -5,8 +5,8 @@ rescue LoadError => detail
   require module_base + '../../../puppet_x/kapacitor/api'
 end
 
-Puppet::Type.type(:kapacitor_template).provide(:kapacitor_api) do
-  desc "Manage Kapacitor templates"
+Puppet::Type.type(:kapacitor_topic_handler).provide(:kapacitor_api) do
+  desc "Manage Kapacitor topic handlers"
 
   confine :feature => :kapacitor_api
 
@@ -18,21 +18,24 @@ Puppet::Type.type(:kapacitor_template).provide(:kapacitor_api) do
 
   def self.instances
     instances = []
-    api.templates.each do |template|
-      instances << new(
-        :name => template['id'],
-        :type => template['type'].to_sym,
-        :script => template['script'],
-        :ensure => :present
-      )
+    api.topics.each do |topic|
+      api.topic_handlers(topic: topic).each do |handler|
+        instances << new(
+          :name => "#{topic}:#{handler['id']}",
+          :handler => handler['id'],
+          :topic => topic,
+          :actions => handler['actions'],
+          :ensure => :present
+        )
+      end
     end
     instances
   end
 
   def self.prefetch(resources)
-    templates = instances
+    items = instances
     resources.each do |name, resource|
-      if provider = templates.find { |template| template.name == name }
+      if provider = items.find { |item| item.handler == resource[:handler] && item.topic == resource[:topic]}
         resources[name].provider = provider
       end
     end
@@ -44,16 +47,16 @@ Puppet::Type.type(:kapacitor_template).provide(:kapacitor_api) do
 
   def create
     begin
-      api.define_template(id: resource[:name], type: resource[:type].to_s, script: resource[:script]})
+      api.define_topic_handler(id: resource[:handler], topic: resource[:topic], actions: resource[:actions]})
     rescue
-      fail "Could not create template #{self.name}: #{$!}"
+      fail "Could not create topic handler #{self.name}: #{$!}"
     end
 
     @property_hash[:ensure] = resource[:ensure]
   end
 
   def destroy
-    api.delete_template(id: resource[:name])
+    api.delete_topic_handler(id: resource[:handler], topic: resource[:topic])
     @property_hash.clear
   end
 
@@ -65,17 +68,13 @@ Puppet::Type.type(:kapacitor_template).provide(:kapacitor_api) do
     @property_flush = {}
   end
 
-  def type=(value)
-    @property_flush['type'] = value.to_s
-  end
-
-  def script=(value)
-    @property_flush['script'] = value
+  def actions=(value)
+    @property_flush['actions'] = value
   end
 
   def flush
     unless @property_flush.empty?
-      api.update_template(id: resource[:name], **@property_flush)
+      api.update_topic_handler(id: resource[:handler], topic: resource[:topic], **@property_flush)
     end
   end
 end

@@ -1,6 +1,7 @@
 class kapacitor (
   Kapacitor::Templates $templates,
   Kapacitor::Tasks $tasks,
+  Kapacitor::Topic_handlers $topic_handlers,
   String $data_dir,
   Hash $opts,
   String $config_dir,
@@ -29,6 +30,12 @@ class kapacitor (
   $tasks.each |String $task_name, Kapacitor::Task $task| {
     kapacitor_task {$task_name:
       * => $task
+    }
+  }
+
+  $topic_handlers.each |String $handler_name, Kapacitor::Topic_handler $handler| {
+    kapacitor_topic_handler {$handler_name:
+      * => $handler
     }
   }
 }
