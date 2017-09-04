@@ -5,10 +5,10 @@ rescue LoadError => detail
   require module_base + '../../../puppet_x/kapacitor/api'
 end
 
-Puppet::Type.type(:kapacitor_task).provide(:api) do
+Puppet::Type.type(:kapacitor_task).provide(:kapacitor_api) do
   desc "Manage Kapacitor tasks"
 
-  confine :feature => :api
+  confine :feature => :kapacitor_api
 
   # Mix in the api as instance methods
   include PuppetX::Kapacitor::API
