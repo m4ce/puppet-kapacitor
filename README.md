@@ -323,7 +323,6 @@ kapacitor::tasks:
       crit:
         value: 95
         type: int
-        description: "Critical value"
     enable: true
     ensure: "present"
 kapacitor::topic_handlers:
