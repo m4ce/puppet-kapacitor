@@ -52,6 +52,10 @@ Puppet::Type.newtype(:kapacitor_task) do
   newproperty(:vars) do
     desc 'A set of vars for overwriting any defined vars in the TICKscript'
 
+    munge do |value|
+      value.map { |k, v| {k => {'description' => ''}.merge(v)} }.reduce({}, :merge)
+    end
+
     validate do |value|
       fail 'Task vars must be a Hash in the form of {"field_name" => {"value" => VALUE, "type" => "TYPE", "description" => "STRING"}}' unless value.is_a?(Hash)
 
