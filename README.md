@@ -240,6 +240,28 @@ Whether the task is enabled or not.
 ##### `ensure` (optional)
 Whether the resource is present or not. Valid values are 'present', 'absent'. Defaults to 'present'.
 
+#### kapacitor_topic_handler
+`kapacitor_topic_handler` manages Kapacitor topic handlers
+
+```
+kapacitor_topic_handler {"<topic>:<handler>": }
+```
+
+##### `name` (required)
+Composite namevar in the form of `<topic>:<handler>`.
+
+##### `handler` (optional)
+Handler name.
+
+##### `topic` (optional)
+Topic name.
+
+##### `actions` (optional)
+Handler actions.
+
+##### `ensure` (optional)
+Whether the resource is present or not. Valid values are 'present', 'absent'. Defaults to 'present'.
+
 <a name="hiera"/>
 
 ## Hiera integration
@@ -251,7 +273,45 @@ You can optionally define your Kapacitor tasks and templates.
 kapacitor::templates:
   "cpu_template":
     type: "stream"
-    script: "stream\n    |from()\n        .measurement('cpu')\n"
+    script: |
+
+    // Info threshold
+    var info
+
+    // Warning threshold
+    var warn = 80
+
+    // Critical threshold
+    var crit = 90
+
+    // How much data to window
+    var period = 10s
+
+    // Emit frequency
+    var every = 10s
+
+    var data = stream
+        |from()
+            .measurement('cpu')
+            .groupBy('host')
+            .where(lambda: "cpu" == 'cpu-total')
+        |eval(lambda: 100.0 - "usage_idle")
+             .as('used')
+        |window()
+             .period(period)
+             .every(every)
+        |mean('used')
+             .as('stat')
+
+    // Thresholds
+    var alert = data
+        |alert()
+            .id('{{ index .Tags "host"}}/cpu_used')
+            .message('{{ .ID }}:{{ index .Fields "stat" }}')
+            .info(lambda: "stat" > info)
+            .warn(lambda: "stat" > warn)
+            .crit(lambda: "stat" > crit)
+            .topic('cpu')
     ensure: "present"
 kapacitor::tasks:
   "cpu_task":
@@ -259,7 +319,19 @@ kapacitor::tasks:
     dbrps:
       - db: "telegraf"
         rp: "autogen"
+    vars:
+      crit:
+        value: 95
+        type: int
+        description: "Critical value"
     enable: true
+    ensure: "present"
+kapacitor::topic_handlers:
+  "cpu:my_handler":
+    actions:
+      - kind: slack
+        options:
+          channel: '#alerts'
     ensure: "present"
 ```
 
