@@ -44,7 +44,7 @@ Puppet::Type.type(:kapacitor_template).provide(:kapacitor_api) do
 
   def create
     begin
-      api.define_template(id: resource[:name], type: resource[:type].to_s, script: resource[:script]})
+      api.define_template(id: resource[:name], type: resource[:type].to_s, script: resource[:script])
     rescue
       fail "Could not create template #{self.name}: #{$!}"
     end
