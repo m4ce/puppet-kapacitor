@@ -9,7 +9,7 @@ module PuppetX
         return @@client if @@client
 
         begin
-          @@client = ::Kapacitor::Client.new(url: ENV['KAPACITOR_API_URL'] || "http://localhost:9092", version: ENV['KAPACITOR_API_VERSION'] || 'v1preview')
+          @@client = ::Kapacitor::Client.new(url: ENV['KAPACITOR_API_URL'] || "http://localhost:9092/kapacitor", version: ENV['KAPACITOR_API_VERSION'] || 'v1preview')
         rescue Exception => e
           fail "#{e.message} (#{e.error})"
         end
