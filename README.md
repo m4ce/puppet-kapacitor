@@ -10,16 +10,19 @@
 6. [Contact](#contact)
 
 <a name="overview"/>
+
 ## Overview
 
 This module implements native types and providers to manage some aspects of Kapacitor. The providers are *fully idempotent*.
 
 <a name="module-description"/>
+
 ## Module Description
 
 The kapacitor module allows to automate the configuration and deployment of Kapacitor templates and tasks.
 
 <a name="setup"/>
+
 ## Setup
 
 The module requires the [kapacitor-ruby](https://rubygems.org/gems/kapacitor-ruby) rubygem. It also requires Puppet >= 4.0.0.
@@ -45,6 +48,7 @@ include kapacitor
 ```
 
 <a name="reference"/>
+
 ## Reference
 
 ### Classes
@@ -237,6 +241,7 @@ Whether the task is enabled or not.
 Whether the resource is present or not. Valid values are 'present', 'absent'. Defaults to 'present'.
 
 <a name="hiera"/>
+
 ## Hiera integration
 
 You can optionally define your Kapacitor tasks and templates.
@@ -259,5 +264,6 @@ kapacitor::tasks:
 ```
 
 <a name="contact"/>
+
 ## Contact
 Matteo Cerutti - matteo.cerutti@hotmail.co.uk
