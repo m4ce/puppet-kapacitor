@@ -69,7 +69,7 @@ Puppet::Type.type(:kapacitor_topic_handler).provide(:kapacitor_api) do
   end
 
   def actions=(value)
-    @property_flush['actions'] = value
+    @property_flush[:actions] = value
   end
 
   def flush

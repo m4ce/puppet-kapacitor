@@ -48,12 +48,12 @@ Puppet::Type.type(:kapacitor_task).provide(:kapacitor_api) do
   def create
     task = {}
 
-    task['type'] = resource[:type].to_s if resource[:type]
-    task['script'] = resource[:script] if resource[:script]
-    task['template_id'] = resource[:template_id] if resource[:template_id]
-    task['dbrps'] = resource[:dbrps] if resource[:dbrps]
-    task['status'] = resource[:enable] ? 'enabled' : 'disabled'
-    task['vars'] = resource[:vars] if resource[:vars]
+    task[:type] = resource[:type].to_s if resource[:type]
+    task[:script] = resource[:script] if resource[:script]
+    task[:template_id] = resource[:template_id] if resource[:template_id]
+    task[:dbrps] = resource[:dbrps] if resource[:dbrps]
+    task[:status] = resource[:enable] ? 'enabled' : 'disabled'
+    task[:vars] = resource[:vars] if resource[:vars]
 
     begin
       api.define_task(id: resource[:name], **task)
@@ -90,19 +90,19 @@ Puppet::Type.type(:kapacitor_task).provide(:kapacitor_api) do
   end
 
   def type=(value)
-    @property_flush['type'] = value.to_s
+    @property_flush[:type] = value.to_s
   end
 
   def script=(value)
-    @property_flush['script'] = value
+    @property_flush[:script] = value
   end
 
   def dbrps=(value)
-    @property_flush['dbrps'] = value
+    @property_flush[:dbrps] = value
   end
 
   def vars=(value)
-    @property_flush['vars'] = value
+    @property_flush[:vars] = value
   end
 
   def flush

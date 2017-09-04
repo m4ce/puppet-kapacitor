@@ -66,11 +66,11 @@ Puppet::Type.type(:kapacitor_template).provide(:kapacitor_api) do
   end
 
   def type=(value)
-    @property_flush['type'] = value.to_s
+    @property_flush[:type] = value.to_s
   end
 
   def script=(value)
-    @property_flush['script'] = value
+    @property_flush[:script] = value
   end
 
   def flush
