@@ -18,18 +18,22 @@ Puppet::Type.newtype(:kapacitor_topic_handler) do
     desc 'Topic name'
   end
 
-  newproperty(:actions, :array_matching => :all) do
-    desc 'List of handler actions in the form of  [{"kind" => "ACTION_KIND", "options" => {}}]'
+  newproperty(:kind) do
+    desc 'The kind of handler'
+  end
 
-    validate do |value|
-      fail 'Handler action must be a hash in the form of {"kind" => "ACTION_KIND", "options" => {}}' unless value.is_a?(Hash) and value.key?('kind')
-    end
+  newproperty(:match) do
+    desc 'A lambda expression to filter matching alerts. By default, all alerts match'
+  end
+
+  newproperty(:options) do
+    desc 'Configurable options determined by the handler kind'
   end
 
   validate do
     if self[:ensure] != "absent"
-      unless self[:actions]
-        fail "Handler actions required for Kapacitor topic #{self[:topic]} handler #{self[:name]}"
+      unless self[:kind]
+        fail "Handler kind required for Kapacitor topic #{self[:topic]} handler #{self[:name]}"
       end
     end
   end

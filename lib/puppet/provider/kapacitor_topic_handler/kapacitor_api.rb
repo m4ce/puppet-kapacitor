@@ -24,7 +24,9 @@ Puppet::Type.type(:kapacitor_topic_handler).provide(:kapacitor_api) do
           :name => "#{topic}:#{handler['id']}",
           :handler => handler['id'],
           :topic => topic,
-          :actions => handler['actions'],
+          :kind => handler['kind'],
+          :match => handler['match'],
+          :options => handler['options'],
           :ensure => :present
         )
       end
@@ -47,7 +49,7 @@ Puppet::Type.type(:kapacitor_topic_handler).provide(:kapacitor_api) do
 
   def create
     begin
-      api.define_topic_handler(id: resource[:handler], topic: resource[:topic], actions: resource[:actions]})
+      api.define_topic_handler(id: resource[:handler], topic: resource[:topic], kind: resource[:kind], match: resource[:match], options: resource[:options])
     rescue
       fail "Could not create topic handler #{self.name}: #{$!}"
     end
@@ -68,13 +70,17 @@ Puppet::Type.type(:kapacitor_topic_handler).provide(:kapacitor_api) do
     @property_flush = {}
   end
 
-  def actions=(value)
-    @property_flush[:actions] = value
+  def match=(value)
+    @property_flush[:match] = value
+  end
+
+  def options=(value)
+    @property_flush[:options] = value
   end
 
   def flush
     unless @property_flush.empty?
-      api.update_topic_handler(id: resource[:handler], topic: resource[:topic], **@property_flush)
+      api.update_topic_handler(id: resource[:handler], topic: resource[:topic], kind: resource[:kind], **@property_flush)
     end
   end
 end
