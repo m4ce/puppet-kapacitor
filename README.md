@@ -333,10 +333,9 @@ kapacitor::tasks:
     ensure: "present"
 kapacitor::topic_handlers:
   "cpu:my_handler":
-    actions:
-      - kind: slack
-        options:
-          channel: '#alerts'
+    kind: slack
+    options:
+      channel: '#alerts'
     ensure: "present"
 ```
 
