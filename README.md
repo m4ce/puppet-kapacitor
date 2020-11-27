@@ -256,8 +256,14 @@ Handler name.
 ##### `topic` (optional)
 Topic name.
 
-##### `actions` (optional)
-Handler actions.
+##### `kind` (required)
+The kind of handler.
+
+##### `match` (optional)
+A lambda expression to filter matching alerts.
+
+##### `options` (optional)
+Configurable options determined by the handler kind.
 
 ##### `ensure` (optional)
 Whether the resource is present or not. Valid values are 'present', 'absent'. Defaults to 'present'.
