@@ -334,6 +334,7 @@ kapacitor::tasks:
 kapacitor::topic_handlers:
   "cpu:my_handler":
     kind: slack
+    match: "changed()"
     options:
       channel: '#alerts'
     ensure: "present"

@@ -67,20 +67,9 @@ Puppet::Type.type(:kapacitor_topic_handler).provide(:kapacitor_api) do
 
   def initialize(value = {})
     super(value)
-    @property_flush = {}
-  end
-
-  def match=(value)
-    @property_flush[:match] = value
-  end
-
-  def options=(value)
-    @property_flush[:options] = value
   end
 
   def flush
-    unless @property_flush.empty?
-      api.update_topic_handler(id: resource[:handler], topic: resource[:topic], kind: resource[:kind], **@property_flush)
-    end
+    api.update_topic_handler(id: resource[:handler], topic: resource[:topic], kind: resource[:kind], match: resource[:match], options: resource[:options])
   end
 end
