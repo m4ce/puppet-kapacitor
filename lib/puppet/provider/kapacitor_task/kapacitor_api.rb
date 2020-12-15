@@ -89,6 +89,6 @@ Puppet::Type.type(:kapacitor_task).provide(:kapacitor_api) do
   end
 
   def flush
-    api.update_task(id: resource[:name], type: resource[:type].to_s, script: resource[:script], dbrps: resource[:dbrps], vars: resource[:vars])
+    api.update_task(id: resource[:name], type: resource[:type].to_s, script: resource[:script], dbrps: resource[:dbrps], status: resource[:enable] ? 'enabled' : 'disabled', vars: resource[:vars])
   end
 end
