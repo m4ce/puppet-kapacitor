@@ -86,28 +86,9 @@ Puppet::Type.type(:kapacitor_task).provide(:kapacitor_api) do
 
   def initialize(value = {})
     super(value)
-    @property_flush = {}
-  end
-
-  def type=(value)
-    @property_flush[:type] = value.to_s
-  end
-
-  def script=(value)
-    @property_flush[:script] = value
-  end
-
-  def dbrps=(value)
-    @property_flush[:dbrps] = value
-  end
-
-  def vars=(value)
-    @property_flush[:vars] = value
   end
 
   def flush
-    unless @property_flush.empty?
-      api.update_task(id: resource[:name], **@property_flush)
-    end
+    api.update_task(id: resource[:name], type: resource[:value].to_s, script: resource[:script], dbrps: resource[:dbrps], vars: resource[:vars])
   end
 end
