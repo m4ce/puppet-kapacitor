@@ -98,7 +98,7 @@ kapacitor::config_file_manage: true
 kapacitor::service_provider: "default"
 kapacitor::gem_dependencies:
   "kapacitor-ruby":
-    ensure: "1.0.8"
+    ensure: "1.0.9"
 kapacitor::packages:
   "kapacitor": {}
 kapacitor::service_image: "kapacitor:latest"
